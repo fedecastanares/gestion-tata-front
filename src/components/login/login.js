@@ -42,8 +42,8 @@ export default function SignIn({history}) {
 
 
   const handleSubmit = e => {
-    e.preventDefault();
     setloading(true);
+    e.preventDefault();
     const validate = User.loginValidate(user, setError);
     if (validate) {
       const login = async (user) => {

@@ -65,12 +65,3 @@ const TableSkeleton = ({header, columnsTitle, size}) => {
 }
  
 export default TableSkeleton;
-
-/*
-                {columnsTitle.map(row => 
-                <StyledTableRow key={row}>
-                    {columns.map(cell => cell !== '_id' && <StyledTableCell key={cell}>{row[cell]}</StyledTableCell> )}
-                    {User.isAdmin() && <StyledTableCell align="center"><Fab size='small' aria-label="edit" color='primary' onClick={() => handleClick('edit', header, row._id, row)}><EditIcon /></Fab ></StyledTableCell>}
-                </StyledTableRow>
-                )}
-                */

@@ -10,7 +10,7 @@ import Logos from '../components/Logos'
 import LogOut from '../components/LogOut'
 import TableSkeleton from '../components/TableSkeleton'
 
-const Index = () => {
+const Index = ({history}) => {
     const { auth, users, setUsers, setEmployeesQty, employeesQty } = useContext(DataContext);
     const columnsTitle = ["Nombre", "Apellido", "Unidad de negocio", "Sector", "Telefono", "Email"];
     
@@ -19,8 +19,12 @@ const Index = () => {
         const User = new UserService();
         const getUsers = async () => {
             const response = await User.getUsers();
-            setUsers(response.data.users);
-            setEmployeesQty(response.data.employeesQty);
+            if (response.data !== undefined) {
+                setUsers(response.data.users);
+                setEmployeesQty(response.data.employeesQty);
+            } else {
+                history.push('/login');
+            }
         }
         getUsers();
     // eslint-disable-next-line

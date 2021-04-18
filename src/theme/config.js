@@ -11,7 +11,7 @@ const Palette = ({children}) => {
             main: '#00548b',
           },
           secondary: {
-            main: '#000',
+            main: '#ec1d25',
           },
         },
       });

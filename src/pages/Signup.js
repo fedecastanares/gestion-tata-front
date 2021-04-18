@@ -1,5 +1,5 @@
-import React, {useContext, useState} from 'react';
-import { Button, CssBaseline, TextField, Typography, Container , Grid, Checkbox, InputLabel, Select, MenuItem} from '@material-ui/core';
+import React, {useContext, useState, useEffect } from 'react';
+import { Button, CssBaseline, TextField, Typography, Container , Grid, Checkbox, InputLabel, Select, MenuItem, LinearProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import swal from 'sweetalert';
 
@@ -28,9 +28,15 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     marginTop: theme.spacing(3),
   },
+  linearProgress: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
 }));
 
-export default function SignIn({history}) {
+export default function SignIn({history, match}) {
   const classes = useStyles();
   const User = new UserService();
 
@@ -46,32 +52,61 @@ export default function SignIn({history}) {
     telephone: '',
     email: ''
   })
+  const [ loading, setLoading ] = useState(false);
   const [ isAdmin, setIsAdmin] = useState(false);
+
+
+  useEffect(() => {
+    if (match.params.id !== undefined){
+      const loadData = async () => {
+        setLoading(true);
+        const response = await User.getUserInfoById(match.params.id);
+        setUser({...user,
+          name: response.name,
+          surname: response.surname,
+          departament: response.departament,
+          business: response.business,
+          telephone: response.telephone,
+          email: response.email
+      });
+        setIsAdmin(response.role === "ADMIN");
+        setLoading(false);
+       }
+      loadData();
+    }
+  // eslint-disable-next-line
+  },[])
 
   const handleSubmit = e => {
     e.preventDefault();
     const validate = User.signUpValidate(user, setError);
+    let successfull = false;
+    const showAlert = (title, text) => {
+      swal({
+        title: title ,
+        text: text ,
+        icon: "success",
+      })
+        .then((ok) => {
+        if (ok) {
+          history.push('/');
+        }
+      });
+    }
+    
     if (validate) {
       const signUp = async (user) => {
-        const successfull = await User.signUp(user.name.trim(), user.surname.trim(), user.departament.trim(), user.business.trim(), user.telephone.trim(), user.email.toLowerCase().trim());
-        if (successfull){
-          setError(false);
-          swal({
-            title: "Usuario creado!",
-            text: `${user.name} podra ingresar a su cuenta con su email y su telefono como contraseña`,
-            icon: "success",
-          })
-            .then((ok) => {
-            if (ok) {
-              history.push('/');
-            }
-          });
-        }
+        successfull = await User.signUp(user.name.trim(), user.surname.trim(), user.departament.trim(), user.business.trim(), user.telephone.trim(), user.email.toLowerCase().trim(), isAdmin);
+        successfull && showAlert("Usuario creado!", `${user.name} podra ingresar a su cuenta con su email y su telefono como contraseña`);
       }
-      signUp(user);
-    } else {
-      setError({severity : 'warning', message: "Usuario o contraseña invalida"})
+      const updateById = async (user, id) => {
+        successfull = await User.updateById(user.name.trim(), user.surname.trim(), user.departament.trim(), user.business.trim(), user.telephone.trim(), user.email.toLowerCase().trim(), isAdmin, id);
+        successfull && showAlert("Usuario modificado!", `El usuaro de ${user.name} fue editado correctamente`);
+      }
+      match.params.id !== undefined ? updateById(user, match.params.id) : signUp(user);
+      setError(false);
     }
+
   }
 
   const handleChange = () => {
@@ -91,130 +126,134 @@ export default function SignIn({history}) {
       <div className={classes.paper}>
         <Logos />
         <Typography component="h1" variant="h5">
-          Registro
+          {match.params.id === undefined ? 'Registro' : 'Editar'}
         </Typography>
         <Message/>
-        <form className={classes.form} noValidate onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-            <Grid item xs={6}>
-                <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="name"
-                    label="Nombre"
-                    name="name"
-                    autoComplete="name"
-                    autoFocus
-                    onChange={onChange}
-                />
-            </Grid>
-            <Grid item xs={6}>
-                <TextField
-                    variant="outlined"
-                    margin="normal"
-                    required
-                    fullWidth
-                    id="surname"
-                    label="Apellido"
-                    name="surname"
-                    autoComplete="surname"
-                    autoFocus
-                    onChange={onChange}
-                    />
-            </Grid>
-        </Grid>
+        {loading ? <div className={classes.linearProgress}><LinearProgress /></div> : 
+          <form className={classes.form} noValidate onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <InputLabel id="business" style={{marginBottom:'1vh'}}>Unidades de Negocio</InputLabel>
-              <Select
-                labelId="business"
-                id="business"
-                name='business'
-                value={user.business}
-                onChange={onChange}
-                variant='outlined'
-                defaultValue=''
-                fullWidth
-              >
-                {businessList.map(business => <MenuItem key={business} value={business}>{business}</MenuItem> )}
-              </Select>
-            </Grid>
-            <Grid item xs={6}>
-              <InputLabel id="departament" style={{marginBottom:'1vh'}}>Sector</InputLabel>
+              <Grid item xs={6}>
+                  <TextField
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="name"
+                      label="Nombre"
+                      name="name"
+                      autoComplete="name"
+                      autoFocus={match.params.id === undefined ? true : false}
+                      onChange={onChange}
+                      value={user.name}
+                  />
+              </Grid>
+              <Grid item xs={6}>
+                  <TextField
+                      variant="outlined"
+                      margin="normal"
+                      required
+                      fullWidth
+                      id="surname"
+                      label="Apellido"
+                      name="surname"
+                      autoComplete="surname"
+                      onChange={onChange}
+                      value={user.surname}
+                      />
+              </Grid>
+          </Grid>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <InputLabel id="business" style={{marginBottom:'1vh'}}>Unidades de Negocio</InputLabel>
                 <Select
-                  labelId="departament"
-                  id="SelectDepartament"
-                  name='departament'
-                  value={user.departament}
+                  labelId="business"
+                  id="business"
+                  name='business'
+                  value={user.business}
                   onChange={onChange}
                   variant='outlined'
                   defaultValue=''
                   fullWidth
                 >
-                  {departamentsList.map(departament => <MenuItem key={departament} value={departament}>{departament}</MenuItem> )}
+                  {businessList.map(business => <MenuItem key={business} value={business}>{business}</MenuItem> )}
                 </Select>
+              </Grid>
+              <Grid item xs={6}>
+                <InputLabel id="departament" style={{marginBottom:'1vh'}}>Sector</InputLabel>
+                  <Select
+                    labelId="departament"
+                    id="SelectDepartament"
+                    name='departament'
+                    value={user.departament}
+                    onChange={onChange}
+                    variant='outlined'
+                    defaultValue=''
+                    fullWidth
+                  >
+                    {departamentsList.map(departament => <MenuItem key={departament} value={departament}>{departament}</MenuItem> )}
+                  </Select>
+              </Grid>
             </Grid>
-          </Grid>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            onChange={onChange}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="telephone"
-            label="Telefono"
-            type="tel"
-            id="telephone"
-            autoComplete="telephone"
-            onChange={onChange}
-          />
-          <Grid container alignItems='center' style={{marginTop: '1vh'}}>
-            <Grid item>
-              <Checkbox
-              checked={isAdmin}
-              onChange={handleChange}
-              name="isAdmin"
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email"
+              name="email"
+              autoComplete="email"
+              onChange={onChange}
+              value={user.email}
+            />
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="telephone"
+              label="Telefono"
+              type="tel"
+              id="telephone"
+              autoComplete="telephone"
+              onChange={onChange}
+              value={user.telephone}
+            />
+            <Grid container alignItems='center' style={{marginTop: '1vh'}}>
+              <Grid item>
+                <Checkbox
+                checked={isAdmin}
+                onChange={handleChange}
+                name="isAdmin"
+                color="primary"
+                />
+              </Grid>
+              <Grid item>
+              <Typography component="p" variant="body1">
+                Administrador
+              </Typography>
+              </Grid>
+            </Grid>
+             <Button
+              fullWidth
+              variant="outlined"
+              color="secondary"
+              className={classes.submit}
+              onClick={()=> history.push('/')}
+            >
+              Cancelar
+            </Button>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
               color="primary"
-              />
-            </Grid>
-            <Grid item>
-            <Typography component="p" variant="body1">
-              Administrador
-            </Typography>
-            </Grid>
-          </Grid>
-           <Button
-            fullWidth
-            variant="outlined"
-            color="secondary"
-            className={classes.submit}
-            onClick={()=> history.push('/')}
-          >
-            Cancelar
-          </Button>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            style={{marginTop: 15}}
-          >
-            Registrar
-          </Button>
-        </form>
+              style={{marginTop: 15}}
+            >
+              {match.params.id === undefined ? 'Registrar' : 'Editar'}
+            </Button>
+          </form>
+        }
       </div>
     </Container>
   );

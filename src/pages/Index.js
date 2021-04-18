@@ -19,7 +19,7 @@ const Index = ({history}) => {
         const User = new UserService();
         const getUsers = async () => {
             const response = await User.getUsers();
-            if (response.data !== undefined) {
+            if (response !== undefined) {
                 setUsers(response.data.users);
                 setEmployeesQty(response.data.employeesQty);
             } else {
@@ -32,16 +32,16 @@ const Index = ({history}) => {
     
 
     return ( 
-        <>
+        <div style={{marginBottom: '5vh'}}>
         <div style={{marginTop:'5vh', marginBottom: '1vh'}}>
             <Logos />
         </div>
         <Container>
             <LogOut />
-            {users ? <Table header='Empleados' data={users} employeesQty={employeesQty} columnsTitle={columnsTitle} />:
+            {users ? <Table header='Empleados' data={users} employeesQty={employeesQty} columnsTitle={columnsTitle} history={history} />:
             <TableSkeleton header='Empleados' size={3} columnsTitle={columnsTitle} />}
         </Container>
-        </>
+        </div>
      );
 }
  

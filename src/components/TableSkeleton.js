@@ -6,13 +6,13 @@ import { Skeleton } from '@material-ui/lab'
 const useStyles = makeStyles((theme) => ({
     table: {
         borderRadius: '1vh',
-        border: `0.0001vh solid ${theme.palette.secondary.main}` 
+        border: `0.0001vh solid ${theme.palette.common.black}` 
     }
   }))
   
   const StyledTableCell = withStyles((theme) => ({
       head: {
-        backgroundColor: theme.palette.secondary.main,
+        backgroundColor: theme.palette.common.black,
         color: theme.palette.common.white,
       },
       body: {

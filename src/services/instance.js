@@ -3,7 +3,7 @@ import { getToken, deauthenticateUser } from './auth/auth';
 
 // `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_BASE_URL}`
 
-export const axiosApiInstance = axios.create({baseURL: `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_BASE_URL}`, timeout: 1500});
+export const axiosApiInstance = axios.create({baseURL: `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}`, timeout: 800});
 
 axiosApiInstance.interceptors.request.use(
   async config => {

@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { axiosApiInstance } from './instance';
-import { authenticateUser, dataUser, setAdmin, isAdmin as isAdminAuthenticatedAuth, isUserAuthenticated as isUserAuthenticatedAuth, getUser as getUserAuthenticatedAuth,  deauthenticateUser as deauthenticateUserAuthenticatedAuth, deauthenticateUser } from './auth/auth';
+import { authenticateUser, dataUser, setAdmin, isAdmin as isAdminAuthenticatedAuth, isUserAuthenticated as isUserAuthenticatedAuth, getUser as getUserAuthenticatedAuth,  deauthenticateUser as deauthenticateUserAuthenticatedAuth } from './auth/auth';
 
 
 export default class Users {
@@ -17,7 +17,7 @@ export default class Users {
     async signUp(name, surname, departament, business, telephone, email) {
         try {
             var data = JSON.stringify({name, surname, departament, business, telephone, email});
-            await axios.post(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_BASE_URL}/register`, data, 
+            await axios.post(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/register`, data, 
             {headers: {'Content-Type': 'application/json'}})
             return true
         } catch (error) {
@@ -28,7 +28,7 @@ export default class Users {
     async login(email, password) {
         try {
             var data = JSON.stringify({"email": email,"password" : password});
-            const response = await axios.post(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_BASE_URL}/login`, data, 
+            const response = await axios.post(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/login`, data, 
             {headers: {'Content-Type': 'application/json'}})
             authenticateUser(response.data.user.token);
             dataUser(response.data.user.name, response.data.user.name);

@@ -32,11 +32,10 @@ const useStyles = makeStyles((theme) => ({
       },
     }))(TableRow);
 
-const MyTable = ({header, data, employeesQty}) => {
+const MyTable = ({header, data, employeesQty, columnsTitle}) => {
     const classes = useStyles();
     const User = new UserService();
 
-    const columnsTitle = ["Nombre", "Apellido", "Unidad de negocio", "Sector", "Telefono", "Email"];
     const columns = Object.keys(data[0]);
 
     const handleClick = (type, header, rowId, row ) => {

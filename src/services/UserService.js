@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { axiosApiInstance } from './instance';
-import { authenticateUser, dataUser, setAdmin, isAdmin as isAdminAuthenticatedAuth, isUserAuthenticated as isUserAuthenticatedAuth, getUser as getUserAuthenticatedAuth,  deauthenticateUser as deauthenticateUserAuthenticatedAuth, deauthenticateUser } from './auth/auth';
+import { authenticateUser, dataUser, setAdmin, isAdmin as isAdminAuthenticatedAuth, isUserAuthenticated as isUserAuthenticatedAuth, getUser as getUserAuthenticatedAuth,  deauthenticateUser as deauthenticateUserAuthenticatedAuth } from './auth/auth';
 
 
 export default class Users {

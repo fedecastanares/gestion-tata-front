@@ -17,7 +17,7 @@ export default class Users {
     async signUp(name, surname, departament, business, telephone, email, isAdmin) {
         try {
             var data = JSON.stringify({name, surname, departament, business, telephone, email, role: isAdmin ? "ADMIN" : "STANDARD"});
-            await axiosApiInstance.post(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/register`, data, 
+            await axiosApiInstance.post(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_PORT}/register`, data, 
             {headers: {'Content-Type': 'application/json'}})
             return true
         } catch (error) {
@@ -28,7 +28,7 @@ export default class Users {
     async updateById(name, surname, departament, business, telephone, email, isAdmin, id) {
         try {
             var data = JSON.stringify({name, surname, departament, business, telephone, email, role: isAdmin ? "ADMIN" : "STANDARD"});
-            await axiosApiInstance.post(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/user/${id}`, data, 
+            await axiosApiInstance.post(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_PORT}/user/${id}`, data, 
             {headers: {'Content-Type': 'application/json'}})
             return true
         } catch (error) {
@@ -39,7 +39,7 @@ export default class Users {
     async login(email, password) {
         try {
             var data = JSON.stringify({"email": email,"password" : password});
-            const response = await axios.post(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_BASE_URL}:${process.env.REACT_APP_PORT}/login`, data, 
+            const response = await axios.post(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_BASE_URL}${process.env.REACT_APP_PORT}/login`, data, 
             {headers: {'Content-Type': 'application/json'}})
             authenticateUser(response.data.user.token);
             dataUser(response.data.user.name, response.data.user.name);

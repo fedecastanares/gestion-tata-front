@@ -50,7 +50,7 @@ const TableSkeleton = ({header, columnsTitle, size}) => {
                 {Array(size).fill(
                 <StyledTableRow >
                         {columnsTitle.map((row, index) => 
-                            <StyledTableCell key={index}><Skeleton />{index}</StyledTableCell>
+                            <StyledTableCell key={index}><Skeleton /></StyledTableCell>
                             )}
                 </StyledTableRow>
                 )}

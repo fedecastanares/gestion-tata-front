@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 const MyTable = ({header, data, columnsTitle, history}) => {
     const classes = useStyles();
     const User = new UserService();
-    const { users, setUsers, employeesQty, setEmployeesQty } = useContext(DataContext);
+    const { users, setUsers, employeesQty, setEmployeesQty, setRenderUsers } = useContext(DataContext);
     const columns = Object.keys(data[0]);
 
     const handleClick = (action, rowId) => {

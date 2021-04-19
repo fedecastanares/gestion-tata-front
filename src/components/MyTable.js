@@ -61,6 +61,7 @@ const MyTable = ({header, data, columnsTitle, history}) => {
               if (remove) {
                 const newState = users.filter(user => user._id !== rowId);
                 setUsers(newState);
+                setRenderUsers(newState);
                 setEmployeesQty(employeesQty - 1);
               }
             }

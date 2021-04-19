@@ -11,7 +11,7 @@ import LogOut from '../components/LogOut'
 import TableSkeleton from '../components/TableSkeleton'
 
 const Index = ({history}) => {
-    const { auth, users, setUsers, setEmployeesQty, employeesQty } = useContext(DataContext);
+    const { auth, setUsers, setEmployeesQty, employeesQty, renderUsers, setRenderUsers } = useContext(DataContext);
     const columnsTitle = ["Nombre", "Apellido", "Unidad de negocio", "Sector", "Telefono", "Email"];
     
 
@@ -21,6 +21,7 @@ const Index = ({history}) => {
             const response = await User.getUsers();
             if (response !== undefined) {
                 setUsers(response.data.users);
+                setRenderUsers(response.data.users);
                 setEmployeesQty(response.data.employeesQty);
             } else {
                 history.push('/login');
@@ -38,7 +39,7 @@ const Index = ({history}) => {
         </div>
         <Container>
             <LogOut />
-            {users ? <Table header='Empleados' data={users} employeesQty={employeesQty} columnsTitle={columnsTitle} history={history} />:
+            {renderUsers ? <Table header='Empleados' data={renderUsers} employeesQty={employeesQty} columnsTitle={columnsTitle} history={history} />:
             <TableSkeleton header='Empleados' size={3} columnsTitle={columnsTitle} />}
         </Container>
         </div>

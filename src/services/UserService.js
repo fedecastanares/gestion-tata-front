@@ -99,6 +99,34 @@ export default class Users {
     }
 
     signUpValidate(user, setError) {
+        if ( user.name === '' ) {
+            setError({severity : 'warning', message: "Debe ingresar el nombre"})
+            return false;
+        }
+        if ( user.surname === '' ) {
+            setError({severity : 'warning', message: "Debe ingresar el apellido"})
+            return false;
+        }
+        if ( user.business === '' ) {
+            setError({severity : 'warning', message: "Debe ingresar la unidad de negocio"})
+            return false;
+        }
+        if ( user.departament === '' ) {
+            setError({severity : 'warning', message: "Debe ingresar el sector"})
+            return false;
+        }
+        if ( user.email === '' ) {
+            setError({severity : 'warning', message: "Debe ingresar el email"})
+            return false;
+        }
+        if ( user.email.indexOf('@') === -1) {
+            setError({severity : 'warning', message: "Debe ingresar un email valido"})
+            return false;
+        }
+        if ( user.telephone === '' ) {
+            setError({severity : 'warning', message: "Debe ingresar el telefono"})
+            return false;
+        }
         return true;
     }
     

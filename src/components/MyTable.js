@@ -10,6 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 
 import UserService from '../services/UserService'
+import SearchBar from '../components/SearchBar'
 
 const useStyles = makeStyles((theme) => ({
     table: {
@@ -77,6 +78,11 @@ const MyTable = ({header, data, columnsTitle, history}) => {
           </Grid>
           <Grid item xs={4}>
            {User.isAdmin() && <Link href='/register'><Button variant="contained" color="primary" fullWidth startIcon={<AddIcon />} >Nuevo</Button></Link>}
+          </Grid>
+        </Grid>
+        <Grid container>
+          <Grid item xs={12} sm={8} lg={4}>
+            <SearchBar />
           </Grid>
         </Grid>
         <TableContainer className={classes.table}>

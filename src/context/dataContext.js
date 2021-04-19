@@ -8,6 +8,7 @@ const DataProvider = ({children}) => {
     const [auth, setauth] = useState(undefined);
     const [error, setError] = useState(false);
     const [users, setUsers] = useState(false);
+    const [renderUsers, setRenderUsers] = useState(false);
     const [employeesQty, setEmployeesQty] = useState(0);
 
     return(
@@ -18,11 +19,13 @@ const DataProvider = ({children}) => {
                 darkmode,
                 users,
                 employeesQty,
+                renderUsers,
                 setauth,
                 setError,
                 setdarkMode,
                 setUsers,
-                setEmployeesQty
+                setEmployeesQty,
+                setRenderUsers
             }}
         >
             {children}

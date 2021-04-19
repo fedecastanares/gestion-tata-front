@@ -41,7 +41,6 @@ const MyTable = ({header, data, columnsTitle, history}) => {
     const classes = useStyles();
     const User = new UserService();
     const { users, setUsers, employeesQty, setEmployeesQty, setRenderUsers } = useContext(DataContext);
-    console.log(data)
     const columns = data.length > 0 ? Object.keys(data[0]) : null;
 
     const handleClick = (action, rowId) => {

@@ -30,9 +30,6 @@ const useStyles = makeStyles((theme) => ({
 
 const TableSkeleton = ({header, columnsTitle, size}) => {
     const classes = useStyles();
-
-
-
     return ( 
         <>
         <Grid container alignItems='center' justify='flex-start' style={{marginBottom: '1vh'}}>
@@ -52,8 +49,8 @@ const TableSkeleton = ({header, columnsTitle, size}) => {
             <TableBody>
                 {Array(size).fill(
                 <StyledTableRow >
-                        {columnsTitle.map(row => 
-                            <StyledTableCell key={row}><Skeleton /></StyledTableCell>
+                        {columnsTitle.map((row, index) => 
+                            <StyledTableCell key={index}><Skeleton />{index}</StyledTableCell>
                             )}
                 </StyledTableRow>
                 )}

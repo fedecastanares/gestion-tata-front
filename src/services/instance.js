@@ -3,7 +3,7 @@ import { getToken, deauthenticateUser } from './auth/auth';
 
 // `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_BASE_URL}`
 
-export const axiosApiInstance = axios.create({baseURL: `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_BASE_URL}`, timeout: 800});
+export const axiosApiInstance = axios.create({baseURL: `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_BASE_URL}`, timeout: 1500});
 
 axiosApiInstance.interceptors.request.use(
   async config => {
@@ -22,11 +22,16 @@ axiosApiInstance.interceptors.response.use((response) => {
   return response
 }, async function (error) {
   const originalRequest = error.config;
+  console.log(originalRequest);
+  console.log(error);
   if ((error.response.status === 403 || error.response.status === 401) && !originalRequest._retry) {
     deauthenticateUser();
     window.location = "/";
     return;
-  } else {
+  } else if (( error.response.status === 403 || error.response.status === 401) && !originalRequest._retry){
+    console.log('no necesitaba actualizar')
+  }
+  else {
     console.log(error);
   }
   window.location = "/";

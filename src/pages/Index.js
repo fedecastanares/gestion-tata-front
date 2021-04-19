@@ -25,6 +25,7 @@ const Index = ({history}) => {
                     setRenderUsers(response.data.users);
                     setEmployeesQty(response.data.employeesQty);
                 } else {
+                    console.log(response);
                     User.deauthenticateUser();
                     history.push('/login');
                 }

@@ -11,21 +11,23 @@ import LogOut from '../components/LogOut'
 import TableSkeleton from '../components/TableSkeleton'
 
 const Index = ({history}) => {
-    const { auth, setUsers, setEmployeesQty, employeesQty, renderUsers, setRenderUsers } = useContext(DataContext);
+    const { auth, users, setUsers, setEmployeesQty, employeesQty, renderUsers, setRenderUsers } = useContext(DataContext);
     const columnsTitle = ["Nombre", "Apellido", "Unidad de negocio", "Sector", "Telefono", "Email"];
     
 
     useEffect(() => {
         const User = new UserService();
         const getUsers = async () => {
-            const response = await User.getUsers();
-            if (response !== undefined) {
-                setUsers(response.data.users);
-                setRenderUsers(response.data.users);
-                setEmployeesQty(response.data.employeesQty);
-            } else {
-                User.deauthenticateUser();
-                history.push('/login');
+            if (!users) {
+                const response = await User.getUsers();
+                if (response !== undefined) {
+                    setUsers(response.data.users);
+                    setRenderUsers(response.data.users);
+                    setEmployeesQty(response.data.employeesQty);
+                } else {
+                    User.deauthenticateUser();
+                    history.push('/login');
+                }
             }
         }
         getUsers();

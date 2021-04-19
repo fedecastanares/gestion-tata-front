@@ -54,6 +54,7 @@ const SearchBar = () => {
     const [ input, setInput ] = useState('');
 
     const handleChange = e => {
+        e.preventDefault();
         setInput(e.target.value);
         if (e.target.value === '' ){
             setRenderUsers(users);

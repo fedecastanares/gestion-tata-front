@@ -41,7 +41,8 @@ const MyTable = ({header, data, columnsTitle, history}) => {
     const classes = useStyles();
     const User = new UserService();
     const { users, setUsers, employeesQty, setEmployeesQty, setRenderUsers } = useContext(DataContext);
-    const columns = Object.keys(data[0]);
+    console.log(data)
+    const columns = data.length > 0 ? Object.keys(data[0]) : null;
 
     const handleClick = (action, rowId) => {
       switch(action){
@@ -100,7 +101,8 @@ const MyTable = ({header, data, columnsTitle, history}) => {
             <TableBody>
                 {data.map(row => 
                 <StyledTableRow key={row.email}>
-                    {columns.map(cell => cell !== '_id' && <StyledTableCell key={cell}>{row[cell]}</StyledTableCell> )}
+                    {data !== null && 
+                      columns.map(cell => cell !== '_id' && <StyledTableCell key={cell}>{row[cell]}</StyledTableCell> )}
                     {User.isAdmin() && <StyledTableCell align="center"><Fab size='small' aria-label="edit" color='primary' onClick={() => handleClick('edit',row._id)}><EditIcon /></Fab ></StyledTableCell>}
                     {User.isAdmin() && <StyledTableCell align="center"><Fab size='small' aria-label="remove" color='secondary' onClick={() => handleClick('remove',row._id)}><CloseIcon /></Fab ></StyledTableCell>}
                 </StyledTableRow>

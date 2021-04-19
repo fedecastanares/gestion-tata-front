@@ -24,6 +24,7 @@ const Index = ({history}) => {
                 setRenderUsers(response.data.users);
                 setEmployeesQty(response.data.employeesQty);
             } else {
+                User.deauthenticateUser();
                 history.push('/login');
             }
         }
